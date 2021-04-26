@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Coupons;
+use App\Entity\Coupon;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Coupons|null find($id, $lockMode = null, $lockVersion = null)
- * @method Coupons|null findOneBy(array $criteria, array $orderBy = null)
- * @method Coupons[]    findAll()
- * @method Coupons[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Coupon|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Coupon|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Coupon[]    findAll()
+ * @method Coupon[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CouponsRepository extends ServiceEntityRepository
+class CouponRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Coupons::class);
+        parent::__construct($registry, Coupon::class);
     }
 
     // /**
-    //  * @return Coupons[] Returns an array of Coupons objects
+    //  * @return Coupon[] Returns an array of Coupon objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class CouponsRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Coupons
+    public function findOneBySomeField($value): ?Coupon
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.exampleField = :val')

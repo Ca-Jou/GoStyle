@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\CouponsRepository;
+use App\Repository\CouponRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=CouponsRepository::class)
+ * @ORM\Entity(repositoryClass=CouponRepository::class)
  */
-class Coupons
+class Coupon
 {
     /**
      * @ORM\Id
