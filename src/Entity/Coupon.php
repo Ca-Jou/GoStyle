@@ -2,50 +2,53 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CouponRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CouponRepository::class)
+ *
+ * @ApiResource(
+ *     collectionOperations={"get"={"normalization_context"={"groups"="coupon:list"}}},
+ *     itemOperations={"get"={"normalization_context"={"groups"="coupon:item"}}},
+ *     order={"code"="ASC"},
+ *     paginationEnabled=false
+ * )
  */
 class Coupon
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=10)
      */
-    private $id;
+    #[Groups(['coupon:list', 'coupon:item'])]
+    private $code;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(['coupon:list', 'coupon:item'])]
     private $description;
-
-    /**
-     * @ORM\Column(type="string", length=10)
-     */
-    private $code;
 
     /**
      * @ORM\Column(type="date")
      */
+    #[Groups(['coupon:list', 'coupon:item'])]
     private $begins;
 
     /**
      * @ORM\Column(type="date")
      */
+    #[Groups(['coupon:list', 'coupon:item'])]
     private $ends;
 
     /**
      * @ORM\Column(type="string", length=500, nullable=true)
      */
+    #[Groups(['coupon:list', 'coupon:item'])]
     private $limitations;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getDescription(): ?string
     {
