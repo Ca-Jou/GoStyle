@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CouponRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -49,6 +51,16 @@ class Coupon
      */
     #[Groups(['coupon:list', 'coupon:item'])]
     private $limitations;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="coupons")
+     */
+    private $users;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
 
     public function getDescription(): ?string
     {
@@ -106,6 +118,33 @@ class Coupon
     public function setLimitations(?string $limitations): self
     {
         $this->limitations = $limitations;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addCoupon($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeCoupon($this);
+        }
 
         return $this;
     }

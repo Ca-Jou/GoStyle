@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -38,6 +40,16 @@ class User implements UserInterface
      * @ORM\Column(type="string", unique=true, nullable=true)
      */
     private $apiToken;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Coupon::class, inversedBy="users")
+     */
+    private $coupons;
+
+    public function __construct()
+    {
+        $this->coupons = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -123,6 +135,30 @@ class User implements UserInterface
     public function setApiToken(?string $apiToken): self
     {
         $this->apiToken = $apiToken;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Coupon[]
+     */
+    public function getCoupons(): Collection
+    {
+        return $this->coupons;
+    }
+
+    public function addCoupon(Coupon $coupon): self
+    {
+        if (!$this->coupons->contains($coupon)) {
+            $this->coupons[] = $coupon;
+        }
+
+        return $this;
+    }
+
+    public function removeCoupon(Coupon $coupon): self
+    {
+        $this->coupons->removeElement($coupon);
 
         return $this;
     }
