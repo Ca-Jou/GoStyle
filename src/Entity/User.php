@@ -10,14 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass=UserRepository::class)
- *
  * @ApiResource(
  *     collectionOperations={"get"={"normalization_context"={"groups"="user:list"}}},
  *     itemOperations={"get"={"normalization_context"={"groups"="user:item"}}},
  *     order={"code"="ASC"},
  *     paginationEnabled=false
  * )
+ * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class User implements UserInterface
 {
@@ -142,9 +142,19 @@ class User implements UserInterface
 
     public function setApiToken(?string $apiToken): self
     {
-        $this->apiToken = $apiToken;
+        $this->apiToken = $apiToken ?? md5(uniqid(rand(), true));
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function createToken(): void
+    {
+        if(!$this->apiToken) {
+            $this->apiToken = md5(uniqid(rand(), true));
+        }
     }
 
     /**
