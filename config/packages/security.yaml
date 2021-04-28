@@ -5,10 +5,10 @@ security:
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        app_user_provider:
-            entity:
-                class: App\Entity\User
-                property: username
+#        app_user_provider:
+#            entity:
+#                class: App\Entity\User
+#                property: username
 
         api_user_provider:
             entity:
@@ -25,10 +25,12 @@ security:
             logout: ~
 
             guard:
-#                provider: api_provider
+                provider: api_user_provider
+#                entry_point: App\Security\JsonAuthenticator
                 authenticators:
                     - App\Security\TokenAuthenticator
-                    - App\Security\JsonAuthenticator
+#                    - App\Security\JsonAuthenticator
 
     access_control:
+        - { path: ^/api/docs, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api, roles: ROLE_USER }
