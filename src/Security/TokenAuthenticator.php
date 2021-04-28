@@ -32,7 +32,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
 
     public function supports(Request $request): bool
     {
-        return 'login' !== $request->attributes->get('_route')
+        return 'authentication_token' !== $request->attributes->get('_route')
             && $request->headers->has('X-AUTH-TOKEN');
     }
 

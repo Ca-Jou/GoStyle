@@ -5,11 +5,10 @@ security:
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-#        app_user_provider:
-#            entity:
-#                class: App\Entity\User
-#                property: username
-
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: username
         api_user_provider:
             entity:
                 class: App\Entity\User
@@ -19,17 +18,14 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
+        api:
+            pattern: ^/api/
+            stateless: true
             anonymous: true
-            lazy: true
-            logout: ~
-
+            provider: api_user_provider
             guard:
-                provider: api_user_provider
-#                entry_point: App\Security\JsonAuthenticator
                 authenticators:
                     - App\Security\TokenAuthenticator
-#                    - App\Security\JsonAuthenticator
 
     access_control:
         - { path: ^/api/docs, roles: IS_AUTHENTICATED_ANONYMOUSLY }
