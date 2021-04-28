@@ -3,11 +3,20 @@
 namespace App\DataFixtures;
 
 use App\Entity\Coupon;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
+    private $passwordEncoder;
+
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $this->passwordEncoder = $passwordEncoder;
+    }
+
     public function load(ObjectManager $manager)
     {
         $coupon1 = new Coupon();
@@ -24,6 +33,16 @@ class AppFixtures extends Fixture
         $coupon2->setEnds(new \DateTime("20210502"));
         $coupon2->setLimitations("hors articles signalés par un point rouge");
         $manager->persist($coupon2);
+
+        $user1 = new User();
+        $user1->setUsername("Johanna");
+        $user1->setPassword($this->passwordEncoder->encodePassword($user1, "Grosse_Pompe"));
+        $manager->persist($user1);
+
+        $user2 = new User();
+        $user2->setUsername("Camille");
+        $user2->setPassword($this->passwordEncoder->encodePassword($user2, "femiNazgül"));
+        $manager->persist($user2);
 
         $manager->flush();
     }
