@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,6 +11,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ *
+ * @ApiResource(
+ *     collectionOperations={"get"={"normalization_context"={"groups"="user:list"}}},
+ *     itemOperations={"get"={"normalization_context"={"groups"="user:item"}}},
+ *     order={"code"="ASC"},
+ *     paginationEnabled=false
+ * )
  */
 class User implements UserInterface
 {
