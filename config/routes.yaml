@@ -1,3 +1,4 @@
-authentication_token:
-  path: /api/authentication_token
-  methods: ['POST']
+login:
+  path: /login
+  controller: App\Controller\SecurityController::login
+  methods: POST

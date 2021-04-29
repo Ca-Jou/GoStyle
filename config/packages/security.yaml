@@ -26,7 +26,22 @@ security:
             guard:
                 authenticators:
                     - App\Security\TokenAuthenticator
+        main:
+            pattern: ^/
+            anonymous: true
+            lazy: true
+            provider: app_user_provider
+            json_login:
+                check_path: /login
+            guard:
+                authenticators:
+                    - App\Security\JsonAuthenticator
+            logout:
+                path: app_logout
+                # where to redirect after logout
+#                 target: /api
 
     access_control:
         - { path: ^/api/docs, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api, roles: ROLE_USER }
