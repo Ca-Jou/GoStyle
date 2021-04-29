@@ -12,12 +12,12 @@ class SecurityController extends AbstractController
 {
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-         if ($user = $this->getUser()) {
-             $json = json_encode([
+        if ($user = $this->getUser()) {
+            $json = json_encode([
                  'apiToken' => $user->getApiToken()
              ]);
-             return new JsonResponse($json, Response::HTTP_OK);
-         }
+            return new JsonResponse($json, Response::HTTP_OK);
+        }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -32,6 +32,5 @@ class SecurityController extends AbstractController
      */
     public function logout()
     {
-
     }
 }

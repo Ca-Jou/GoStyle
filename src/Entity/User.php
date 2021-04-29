@@ -185,7 +185,7 @@ class User implements UserInterface
      */
     public function createToken(): void
     {
-        if(!$this->apiToken) {
+        if (!$this->apiToken) {
             $this->apiToken = md5(uniqid(rand(), true));
         }
     }
