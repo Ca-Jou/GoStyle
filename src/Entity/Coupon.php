@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Action\NotFoundAction;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CouponRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,45 +12,53 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CouponRepository::class)
- *
- * @ApiResource(
- *     collectionOperations={"get"={"normalization_context"={"groups"="coupon:list"}}},
- *     itemOperations={"get"={"normalization_context"={"groups"="coupon:item"}}},
- *     order={"code"="ASC"},
- *     paginationEnabled=false
- * )
  */
+
+#[ApiResource(
+    collectionOperations: [
+        'get' => [
+            'controller' => NotFoundAction::class,
+            'read' => false,
+            'output' => false,
+        ]
+    ],
+    itemOperations: [
+        'get' => [
+            'method' => 'get',
+        ]
+    ],
+)]
 class Coupon
 {
     /**
      * @ORM\Id
      * @ORM\Column(type="string", length=10)
      */
-    #[Groups(['coupon:list', 'coupon:item'])]
+    #[Groups(['coupon:item'])]
     private $code;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    #[Groups(['coupon:list', 'coupon:item'])]
+    #[Groups(['coupon:item'])]
     private $description;
 
     /**
      * @ORM\Column(type="date")
      */
-    #[Groups(['coupon:list', 'coupon:item'])]
+    #[Groups(['coupon:item'])]
     private $begins;
 
     /**
      * @ORM\Column(type="date")
      */
-    #[Groups(['coupon:list', 'coupon:item'])]
+    #[Groups(['coupon:item'])]
     private $ends;
 
     /**
      * @ORM\Column(type="string", length=500, nullable=true)
      */
-    #[Groups(['coupon:list', 'coupon:item'])]
+    #[Groups(['coupon:item'])]
     private $limitations;
 
     /**
