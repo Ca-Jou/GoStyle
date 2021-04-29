@@ -2,23 +2,41 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Action\NotFoundAction;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource(
- *     collectionOperations={"get"={"normalization_context"={"groups"="user:list"}}},
- *     itemOperations={"get"={"normalization_context"={"groups"="user:item"}}},
- *     order={"username"="ASC"},
- *     paginationEnabled=false
- * )
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\HasLifecycleCallbacks()
  */
+
+#[ApiResource(
+    collectionOperations: [
+        'get' => [
+            'controller' => NotFoundAction::class,
+            'read' => false,
+            'output' => false,
+        ]
+    ],
+    itemOperations: [
+        'get_coupons' => [
+            'method' => 'get',
+            'path' => '/user/{apiToken}/get_coupons',
+        ],
+        'add_coupon' => [
+            'method' => 'put',
+            'path' => '/user/{apiToken}/add_coupon',
+            'status' => Response::HTTP_CREATED,
+        ]
+    ],
+)]
 class User implements UserInterface
 {
     /**
@@ -27,6 +45,8 @@ class User implements UserInterface
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    // TODO replace Id by Username
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
@@ -52,6 +72,7 @@ class User implements UserInterface
     /**
      * @ORM\ManyToMany(targetEntity=Coupon::class, inversedBy="users")
      */
+    #[Groups(['user:item'])]
     private $coupons;
 
     public function __construct()
