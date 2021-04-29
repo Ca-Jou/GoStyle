@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Action\NotFoundAction;
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -29,11 +30,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
         'get_coupons' => [
             'method' => 'get',
             'path' => '/user/{apiToken}/get_coupons',
+            'normalization_context' => [
+                'groups' => 'user:item'
+            ]
         ],
         'add_coupon' => [
             'method' => 'put',
             'path' => '/user/{apiToken}/add_coupon',
             'status' => Response::HTTP_CREATED,
+            'normalization_context' => [
+                'groups' => 'user:item'
+            ]
         ]
     ],
 )]
@@ -43,6 +50,7 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @ApiProperty(identifier=false)
      */
     private $id;
 
@@ -66,6 +74,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", unique=true, nullable=true)
+     * @ApiProperty(identifier=true)
      */
     private $apiToken;
 

@@ -19,15 +19,14 @@ class UserController extends AbstractController
         ],
         methods: ['GET']
     )]
-    public function getCoupons(string $apiToken): JsonResponse
+    public function getCoupons(): JsonResponse
     {
         $this->denyAccessUnlessGranted("ROLE_USER");
 
         $coupons = $this->getUser()->getCoupons();
-        $username = $this->getUser()->getUsername();
+        dump($coupons);
 
         $json = json_encode([
-            'username' => $username,
             'coupons' => $coupons
         ]);
 

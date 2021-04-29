@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Action\NotFoundAction;
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CouponRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -32,7 +33,15 @@ class Coupon
 {
     /**
      * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     * @ApiProperty(identifier=false)
+     */
+    private $id;
+
+    /**
      * @ORM\Column(type="string", length=10)
+     * @ApiProperty(identifier=true)
      */
     #[Groups(['coupon:item'])]
     private $code;

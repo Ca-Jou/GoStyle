@@ -32,6 +32,7 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.4",
+        "symfony/debug-bundle": "5.2.*",
         "symfony/maker-bundle": "^1.29"
     },
     "config": {

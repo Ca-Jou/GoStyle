@@ -42,6 +42,7 @@ class AppFixtures extends Fixture
         $user1->setPassword($this->passwordEncoder->encodePassword($user1, "Grosse_Pompe"));
         $user1->setRoles(['ROLE_USER']);
         $user1->setApiToken($this->tokenGenerator->generateToken());
+        $user1->addCoupon($coupon1);
         $manager->persist($user1);
 
         $user2 = new User();
@@ -49,6 +50,8 @@ class AppFixtures extends Fixture
         $user2->setPassword($this->passwordEncoder->encodePassword($user2, "femiNazgül"));
         $user2->setRoles(['ROLE_USER']);
         $user2->setApiToken($this->tokenGenerator->generateToken());
+        $user2->addCoupon($coupon1);
+        $user2->addCoupon($coupon2);
         $manager->persist($user2);
 
         $manager->flush();
