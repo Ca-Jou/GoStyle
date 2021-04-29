@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ApiResource(
  *     collectionOperations={"get"={"normalization_context"={"groups"="user:list"}}},
  *     itemOperations={"get"={"normalization_context"={"groups"="user:item"}}},
- *     order={"code"="ASC"},
+ *     order={"username"="ASC"},
  *     paginationEnabled=false
  * )
  * @ORM\Entity(repositoryClass=UserRepository::class)
