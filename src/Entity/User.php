@@ -40,7 +40,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
             'status' => Response::HTTP_CREATED,
             'normalization_context' => [
                 'groups' => 'user:item'
-            ]
+            ],
+            'denormalization_context' => [
+                'groups' => 'user:item'
+            ],
         ]
     ],
 )]
