@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+  php:
+    image: php:8.0-fpm
+    ports: [ 80 ]
+  database:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: GoStyle
+      MYSQL_USER: gostyle
+      MYSQL_PASSWORD: gostyle
+      MYSQL_ROOT_PASSWORD: root
+    labels:
+        com.symfony.server.service-prefix: 'DATABASE'
+    ports: [3306]
