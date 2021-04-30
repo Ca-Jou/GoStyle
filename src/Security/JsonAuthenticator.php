@@ -52,7 +52,7 @@ class JsonAuthenticator extends AbstractFormLoginAuthenticator
 
     public function getCredentials(Request $request)
     {
-        $data = json_decode($request->getContent(), true);
+        $data = $request->toArray();
 
         $credentials = [
             'username' => $data['username'],
@@ -86,9 +86,9 @@ class JsonAuthenticator extends AbstractFormLoginAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        $json = json_encode([
+        $json = [
             'apiToken' => $token->getUser()->getApiToken()
-        ]);
+        ];
 
         return new JsonResponse($json, Response::HTTP_OK);
     }
