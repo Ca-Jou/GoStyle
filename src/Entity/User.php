@@ -29,14 +29,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
     itemOperations: [
         'get_coupons' => [
             'method' => 'get',
-            'path' => '/user/{apiToken}/get_coupons',
+            'path' => '/users/{apiToken}/get_coupons',
             'normalization_context' => [
                 'groups' => 'user:item'
             ]
         ],
         'add_coupon' => [
             'method' => 'put',
-            'path' => '/user/{apiToken}/add_coupon',
+            'path' => '/users/{apiToken}/add_coupon',
             'status' => Response::HTTP_CREATED,
             'normalization_context' => [
                 'groups' => 'user:item'
