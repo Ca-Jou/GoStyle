@@ -14,3 +14,5 @@ services:
     labels:
         com.symfony.server.service-prefix: 'DATABASE'
     ports: [3306]
+  composer:
+    image: composer:latest
