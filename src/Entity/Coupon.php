@@ -26,6 +26,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
     itemOperations: [
         'get' => [
             'method' => 'get',
+            'normalization_context' => [
+                'groups' => 'coupon:item'
+            ]
         ]
     ],
 )]
