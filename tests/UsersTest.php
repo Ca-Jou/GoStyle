@@ -2,7 +2,10 @@
 
 namespace App\Tests;
 
-class CouponsTest extends \ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase
+
+use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
+
+class UsersTest extends ApiTestCase
 {
     public function testGetCollection(): void
     {
