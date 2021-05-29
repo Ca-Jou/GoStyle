@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup PHP with PECL extension
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+          tools: composer:v2, php-cs-fixer, phpstan
+      - uses: actions/checkout@v2
+#       - name: Run tests
+#         run: make setup && make fixtures && make phpunit
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyse src tests
+      - name: Run CS fixer
+        run: tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run
