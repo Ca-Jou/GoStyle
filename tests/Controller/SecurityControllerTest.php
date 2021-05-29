@@ -11,8 +11,8 @@ class SecurityControllerTest extends WebTestCase
         $client = static::createClient();
 
         $credentials = [
-            'username' => 'Camille',
-            'password' => 'femiNazgül'
+            'username' => 'TestUser1',
+            'password' => 'TestUser1'
         ];
 
         $client->request('POST', '/login',
