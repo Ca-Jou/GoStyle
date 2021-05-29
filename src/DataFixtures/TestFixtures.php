@@ -10,7 +10,7 @@ use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
-class AppFixtures extends Fixture implements FixtureGroupInterface
+class TestFixtures extends Fixture implements FixtureGroupInterface
 {
     private $passwordEncoder;
     private $tokenGenerator;
@@ -23,36 +23,36 @@ class AppFixtures extends Fixture implements FixtureGroupInterface
 
     public function load(ObjectManager $manager)
     {
-        $coupon1 = new Coupon();
-        $coupon1->setCode("20CASQ");
-        $coupon1->setDescription("-20% sur les casquettes");
-        $coupon1->setBegins(new \DateTime("20210415"));
-        $coupon1->setEnds(new \DateTime("20210502"));
-        $manager->persist($coupon1);
+        $testCoupon1 = new Coupon();
+        $testCoupon1->setCode("TEST1");
+        $testCoupon1->setDescription("test description");
+        $testCoupon1->setBegins(new \DateTime());
+        $testCoupon1->setEnds(new \DateTime());
+        $testCoupon1->setLimitations("test limitations");
+        $manager->persist($testCoupon1);
 
-        $coupon2 = new Coupon();
-        $coupon2->setCode("DECONFINE");
-        $coupon2->setDescription("-50% sur tout le site");
-        $coupon2->setBegins(new \DateTime("20210502"));
-        $coupon2->setEnds(new \DateTime("20210502"));
-        $coupon2->setLimitations("hors articles signalés par un point rouge");
-        $manager->persist($coupon2);
+        $testCoupon2 = new Coupon();
+        $testCoupon2->setCode("TEST2");
+        $testCoupon2->setDescription("test description");
+        $testCoupon2->setBegins(new \DateTime());
+        $testCoupon2->setEnds(new \DateTime());
+        $testCoupon2->setLimitations("test limitations");
+        $manager->persist($testCoupon2);
 
         $user1 = new User();
-        $user1->setUsername("Johanna");
-        $user1->setPassword($this->passwordEncoder->encodePassword($user1, "Grosse_Pompe"));
+        $user1->setUsername("TestUser1");
+        $user1->setPassword($this->passwordEncoder->encodePassword($user1, "TestUser1"));
         $user1->setRoles(['ROLE_USER']);
         $user1->setApiToken($this->tokenGenerator->generateToken());
-        $user1->addCoupon($coupon1);
+        $user1->addCoupon($testCoupon1);
         $manager->persist($user1);
 
         $user2 = new User();
-        $user2->setUsername("Camille");
-        $user2->setPassword($this->passwordEncoder->encodePassword($user2, "femiNazgül"));
+        $user2->setUsername("TestUser2");
+        $user2->setPassword($this->passwordEncoder->encodePassword($user2, "TestUser2"));
         $user2->setRoles(['ROLE_USER']);
         $user2->setApiToken($this->tokenGenerator->generateToken());
-        $user2->addCoupon($coupon1);
-        $user2->addCoupon($coupon2);
+        $user2->addCoupon($testCoupon2);
         $manager->persist($user2);
 
         $manager->flush();
@@ -60,6 +60,6 @@ class AppFixtures extends Fixture implements FixtureGroupInterface
 
     public static function getGroups(): array
     {
-        return ['app'];
+        return ['test'];
     }
 }
