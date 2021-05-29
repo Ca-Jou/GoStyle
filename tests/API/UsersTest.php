@@ -3,7 +3,7 @@
 namespace App\Tests;
 
 
-use App\Entity\Coupon;
+use App\Repository\CouponRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -60,7 +60,7 @@ class UsersTest extends WebTestCase
         $this->assertJsonStringEqualsJsonString($jsonError, $client->getResponse()->getContent());
     }
 
-    public function testGetItemWithToken(): void
+    public function testGetUserCouponsWithToken(): void
     {
         $client = static::createClient();
 
@@ -91,16 +91,75 @@ class UsersTest extends WebTestCase
     {
         $client = static::createClient();
 
-        // retrieve token
+        // retrieve test user
         $userRepository = static::$container->get(UserRepository::class);
         $testUser = $userRepository->findOneBy(['username' => 'Camille']);
 
-        $testCoupon = new Coupon();
-        $testCoupon->setCode('TEST');
+        // retrieve test coupon
+        $couponRepository = static::$container->get(CouponRepository::class);
+        $testCoupon = $couponRepository->findOneBy(['code' => 'TEST']);
 
-        // token provided -> it should succeed
-        $client->request('POST', '/api/users', [], [], ['HTTP_X_AUTH_TOKEN' => $testUser->getApiToken()], json_encode($testCoupon));
+        // token provided but method POST not allowed -> it should fail
+        $client->request('POST', '/api/users', [], [], ['HTTP_X_AUTH_TOKEN' => $testUser->getApiToken(), 'Content-Type' => 'application/ld+json'], json_encode($testCoupon));
 
         $this->assertResponseStatusCodeSame(405);
+    }
+
+    public function testAddCouponWithoutToken(): void
+    {
+        $client = static::createClient();
+
+        // retrieve token (for URL)
+        $userRepository = static::$container->get(UserRepository::class);
+        $testUser = $userRepository->findOneBy(['username' => 'Camille']);
+        $testToken = $testUser->getApiToken();
+
+        // retrieve test coupon
+        $couponRepository = static::$container->get(CouponRepository::class);
+        $testCoupon = $couponRepository->findOneBy(['code' => 'TEST']);
+
+        // No authentication -> it should ask for credentials
+        $client->request('PUT', '/api/users/'.$testToken.'/add_coupon', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode($testCoupon));
+        $this->assertResponseStatusCodeSame(401);
+        $this->assertResponseHeaderSame('content-type', 'application/json');
+
+        $jsonError = json_encode([
+            'message' => 'Authentication required'
+        ]);
+        $this->assertJsonStringEqualsJsonString($jsonError, $client->getResponse()->getContent());
+    }
+
+    public function testAddCouponWithToken(): void
+    {
+        $client = static::createClient();
+
+        // retrieve token
+        $userRepository = static::$container->get(UserRepository::class);
+        $testUser = $userRepository->findOneBy(['username' => 'Camille']);
+        $testToken = $testUser->getApiToken();
+
+        // retrieve test coupon
+        $couponRepository = static::$container->get(CouponRepository::class);
+        $testCoupon = $couponRepository->findOneBy(['code' => 'TEST']);
+        $couponsList = [
+            "coupons" => [
+                "/api/coupons/" . $testCoupon->getCode()
+            ]
+        ];
+
+        // token provided -> it should succeed
+        $client->request('PUT', '/api/users/'.$testToken.'/add_coupon', [], [], ['HTTP_X_AUTH_TOKEN' => $testUser->getApiToken(), 'CONTENT_TYPE' => 'application/json'], json_encode($couponsList));
+        $this->assertResponseStatusCodeSame(201);
+        $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
+
+        $responseContent = json_decode($client->getResponse()->getContent(), true);
+        $this->assertArrayHasKey('@id', $responseContent);
+        $this->assertSame('/api/users/'.$testToken.'/get_coupons', $responseContent['@id']);
+        $this->assertArrayHasKey('coupons', $responseContent);
+        $this->assertSame($couponsList['coupons'], $responseContent['coupons']);
+        $this->assertArrayNotHasKey('username',$responseContent);
+        $this->assertArrayNotHasKey('password',$responseContent);
+        $this->assertArrayNotHasKey('roles',$responseContent);
+        $this->assertArrayNotHasKey('apiToken',$responseContent);
     }
 }

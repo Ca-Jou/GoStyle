@@ -37,6 +37,14 @@ class AppFixtures extends Fixture
         $coupon2->setLimitations("hors articles signalés par un point rouge");
         $manager->persist($coupon2);
 
+        $testCoupon = new Coupon();
+        $testCoupon->setCode("TEST");
+        $testCoupon->setDescription("test description");
+        $testCoupon->setBegins(new \DateTime());
+        $testCoupon->setEnds(new \DateTime());
+        $testCoupon->setLimitations("test limitations");
+        $manager->persist($testCoupon);
+
         $user1 = new User();
         $user1->setUsername("Johanna");
         $user1->setPassword($this->passwordEncoder->encodePassword($user1, "Grosse_Pompe"));
