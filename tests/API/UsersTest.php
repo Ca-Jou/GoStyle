@@ -30,7 +30,7 @@ class UsersTest extends WebTestCase
 
         // retrieve token
         $userRepository = static::$container->get(UserRepository::class);
-        $testUser = $userRepository->findOneBy(['username' => 'Camille']);
+        $testUser = $userRepository->findOneBy(['username' => 'TestUser1']);
 
         // token provided -> it should fail with a 404 (collection retrieval deactivated in the API)
         $client->request('GET', '/api/users', [], [], [
@@ -46,7 +46,7 @@ class UsersTest extends WebTestCase
 
         // retrieve token (for URL)
         $userRepository = static::$container->get(UserRepository::class);
-        $testUser = $userRepository->findOneBy(['username' => 'Camille']);
+        $testUser = $userRepository->findOneBy(['username' => 'TestUser1']);
         $testToken = $testUser->getApiToken();
 
         // No authentication -> it should ask for credentials
@@ -66,7 +66,7 @@ class UsersTest extends WebTestCase
 
         // retrieve token
         $userRepository = static::$container->get(UserRepository::class);
-        $testUser = $userRepository->findOneBy(['username' => 'Camille']);
+        $testUser = $userRepository->findOneBy(['username' => 'TestUser1']);
         $testToken = $testUser->getApiToken();
 
         // token provided -> it should succeed
@@ -93,11 +93,11 @@ class UsersTest extends WebTestCase
 
         // retrieve test user
         $userRepository = static::$container->get(UserRepository::class);
-        $testUser = $userRepository->findOneBy(['username' => 'Camille']);
+        $testUser = $userRepository->findOneBy(['username' => 'TestUser1']);
 
         // retrieve test coupon
         $couponRepository = static::$container->get(CouponRepository::class);
-        $testCoupon = $couponRepository->findOneBy(['code' => 'TEST']);
+        $testCoupon = $couponRepository->findOneBy(['code' => 'TEST1']);
 
         // token provided but method POST not allowed -> it should fail
         $client->request('POST', '/api/users', [], [], ['HTTP_X_AUTH_TOKEN' => $testUser->getApiToken(), 'Content-Type' => 'application/ld+json'], json_encode($testCoupon));
@@ -111,12 +111,12 @@ class UsersTest extends WebTestCase
 
         // retrieve token (for URL)
         $userRepository = static::$container->get(UserRepository::class);
-        $testUser = $userRepository->findOneBy(['username' => 'Camille']);
+        $testUser = $userRepository->findOneBy(['username' => 'TestUser1']);
         $testToken = $testUser->getApiToken();
 
         // retrieve test coupon
         $couponRepository = static::$container->get(CouponRepository::class);
-        $testCoupon = $couponRepository->findOneBy(['code' => 'TEST']);
+        $testCoupon = $couponRepository->findOneBy(['code' => 'TEST1']);
 
         // No authentication -> it should ask for credentials
         $client->request('PUT', '/api/users/'.$testToken.'/add_coupon', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode($testCoupon));
@@ -135,12 +135,12 @@ class UsersTest extends WebTestCase
 
         // retrieve token
         $userRepository = static::$container->get(UserRepository::class);
-        $testUser = $userRepository->findOneBy(['username' => 'Camille']);
+        $testUser = $userRepository->findOneBy(['username' => 'TestUser1']);
         $testToken = $testUser->getApiToken();
 
         // retrieve test coupon
         $couponRepository = static::$container->get(CouponRepository::class);
-        $testCoupon = $couponRepository->findOneBy(['code' => 'TEST']);
+        $testCoupon = $couponRepository->findOneBy(['code' => 'TEST2']);
         $couponsList = [
             "coupons" => [
                 "/api/coupons/" . $testCoupon->getCode()
