@@ -1,7 +1,16 @@
+# See: https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
 # See: https://github.com/shivammathur/setup-php/blob/master/examples/symfony-mysql.yml
 
-name: CI
-on: [push, pull_request]
+# This workflow runs quality tools and tests. It applies to the main branch only.
+
+name: CI - Quality+Tests
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   quality:
