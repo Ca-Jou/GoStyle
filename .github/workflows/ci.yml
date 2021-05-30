@@ -70,6 +70,11 @@ jobs:
           php bin/console doctrine:migrations:migrate || echo "No migrations found or migration failed"
         env:
           DATABASE_URL: mysql://root:root@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/GoStyle_test
+      - name: Load Fixtures
+        run: |
+          php bin/console doctrine:fixtures:load --no-interaction --group=test || echo "No fixtures found or fixtures loading failed"
+        env:
+          DATABASE_URL: mysql://root:root@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/GoStyle_test
       - name: Run PHPStan
         run: phpstan analyze src tests
       - name: Run PHP CS Fixer
