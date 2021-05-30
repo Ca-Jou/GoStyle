@@ -76,4 +76,4 @@ jobs:
       - name: Run PHPStan
         run: phpstan analyze src tests
       - name: Run PHP CS Fixer
-        run: php-cs-fixer fix --dry-run
+        run: php-cs-fixer fix src --dry-run
