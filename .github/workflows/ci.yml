@@ -76,3 +76,5 @@ jobs:
         run: php-cs-fixer fix src --dry-run
       - name: Run Tests
         run: phpunit --coverage-text
+        env:
+          DATABASE_URL: mysql://root:root@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/GoStyle_test
