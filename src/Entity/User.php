@@ -57,8 +57,6 @@ class User implements UserInterface
      */
     private $id;
 
-    // TODO replace Id by Username
-
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
