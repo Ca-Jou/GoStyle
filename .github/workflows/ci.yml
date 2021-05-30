@@ -63,7 +63,7 @@ jobs:
         run: |
           composer require --dev symfony/orm-pack symfony/phpunit-bridge
           composer install --no-progress --prefer-dist --optimize-autoloader
-          php bin/phpunit install
+#          php bin/phpunit install
       - name: Run Migration
         run: |
           php bin/console doctrine:schema:update --force || echo "No migrations found or schema update failed"
