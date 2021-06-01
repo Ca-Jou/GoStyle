@@ -1,5 +1,5 @@
 db:
-  type: mysql:latest
+  type: mariadb:10.5
   disk: 1024
   size: S
 
