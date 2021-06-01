@@ -1,0 +1,5 @@
+db:
+  type: mysql:latest
+  disk: 1024
+  size: S
+

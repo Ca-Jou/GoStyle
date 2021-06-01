@@ -9,6 +9,7 @@ runtime:
         - sodium
         - ctype
         - iconv
+        - pdo_mysql
         
 
 variables:
@@ -21,14 +22,15 @@ build:
 
 disk: 512
 
+relationships:
+    database: "db:mysql"
+
 web:
     locations:
         "/":
             root: "public"
             expires: 1h
             passthru: "/index.php"
-
-
 
 mounts:
     "/var": { source: local, source_path: var }
