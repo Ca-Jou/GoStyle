@@ -29,18 +29,18 @@ class CouponController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        if (!array_key_exists("newCoupon", $data)) {
+        if (!array_key_exists('newCoupon', $data)) {
             $resp = json_encode([
-                "error" => "bad payload formatting"
+                'error' => 'bad payload formatting'
             ]);
             return new JsonResponse($resp, Response::HTTP_BAD_REQUEST);
         }
 
-        $code = $data["newCoupon"];
+        $code = $data['newCoupon'];
 
         if (!$coupon = $this->couponRepository->findOneBy(["code" => $code])) {
             $resp = json_encode([
-                "error" => "coupon could not be found"
+                'error' => 'coupon could not be found'
             ]);
             return new JsonResponse($resp, Response::HTTP_BAD_REQUEST);
         }
@@ -53,7 +53,7 @@ class CouponController extends AbstractController
         $this->entityManager->flush();
 
         $resp = json_encode([
-            "Message" => "coupon was added to user"
+            'Message' => 'coupon was added to user'
         ]);
         return new JsonResponse($resp, Response::HTTP_CREATED);
     }
