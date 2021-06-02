@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Action\NotFoundAction;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\CouponController;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -35,15 +36,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
             ]
         ],
         'add_coupon' => [
-            'method' => 'put',
+            'method' => 'post',
             'path' => '/users/{apiToken}/add_coupon',
-            'status' => Response::HTTP_CREATED,
+            'controller' => CouponController::class,
             'normalization_context' => [
                 'groups' => 'user:item'
-            ],
-            'denormalization_context' => [
-                'groups' => 'user:item'
-            ],
+            ]
         ]
     ],
 )]
